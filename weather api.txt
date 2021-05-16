@@ -2,9 +2,12 @@ ce96bebb0d2a102f5cda8e9f1d1b7c58
 
 https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
 
+To start git:g
 git init
 git add -A
 git commit -m 'version_name'
+
+
 git status
 git reset --hard HEAD
 git reset --hard f6huykkjh7676kkjkkh8hgh78tihyutfg5ggfur5gvd4
@@ -17,3 +20,4 @@ git push origin master
 npm init
 npm i parcel --save-dev
 npx parcel index.html
+..
