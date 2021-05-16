@@ -98,6 +98,15 @@
     font-weight: 700;
   }
 
+  .error {
+    position: absolute;
+    top: 21rem;
+    width: 100%;
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 700;
+  }
+
   .row {
     display: flex;
     flex-wrap: wrap;
@@ -210,6 +219,14 @@
   }
 
   .container {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    font-size: 5rem;
+    font-weight: 700;
+  }
+
+  .error {
     position: relative;
     width: 100%;
     text-align: center;

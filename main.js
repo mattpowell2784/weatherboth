@@ -10,8 +10,6 @@ function getAddressSearchValue() {
   });
 }
 
-//
-
 //get geolocation latitude and longitude
 const getGeoLocation = async function (address) {
   let locationGeo;
@@ -33,13 +31,15 @@ const getGeoLocation = async function (address) {
     // get latitude and longitude
     locationGeo = geoData.results[0].geometry.location;
   } catch (error) {
-    let selectContainer = document.querySelector(`.container`);
-    let html = `<p id="geo_error">Please enter a valid town</p>`;
+    let selectContainer = document.querySelector(`.error`);
+    let html = `Please enter a valid town<br>`;
     selectContainer.insertAdjacentHTML('afterbegin', html);
   }
   //get weather according to location
   getWeather(locationGeo);
-  renderLocationTitle(locationDataFor);
+  if (locationDataFor) {
+    renderLocationTitle(locationDataFor);
+  }
 };
 
 //get weather
@@ -59,8 +59,8 @@ getWeather = async function (location) {
     //render weather data
     renderWeatherData(weatherData);
   } catch (error) {
-    let selectColumn = document.querySelector(`.container`);
-    let html = `<p id="weather_error">Error getting location</p>`;
+    let selectColumn = document.querySelector(`.error`);
+    let html = `Error getting location<br>`;
     selectColumn.insertAdjacentHTML('afterbegin', html);
   }
 };
@@ -74,14 +74,9 @@ function renderLocationTitle(location) {
 
 //removes error messages if required
 function clearErrorMessages() {
-  let geoError = document.getElementById('geo_error');
+  let geoError = document.getElementById('error_id');
   if (geoError) {
     geoError.remove();
-  }
-
-  let weatherError = document.getElementById('weather_error');
-  if (weatherError) {
-    weatherError.remove();
   }
 }
 
@@ -94,8 +89,6 @@ mobileOrDesktopHtmlSpacer = function checkScreenSize() {
   console.log(spacer);
   return spacer;
 };
-
-mobileOrDesktopHtmlSpacer();
 
 //render weather data
 function renderWeatherData(weatherData) {
