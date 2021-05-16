@@ -48,7 +48,7 @@
     transform: translate(-50%, -50%);
     text-align: center;
     padding: 1rem;
-    background-color: rgba(8, 92, 248, 0.4);
+    background-color: rgba(8, 92, 248, 0.5);
     visibility: '';
   }
 
@@ -69,7 +69,7 @@
     height: 5rem;
     width: 20rem;
     margin: 0.5rem;
-    background: rgb(17, 0, 250);
+    background: rgb(8, 92, 248);
     color: white;
     border-radius: 3rem;
     font-weight: 700;
@@ -109,7 +109,7 @@
   }
 
   [class$='col'] {
-    background-color: rgb(42, 30, 210);
+    background-color: rgba(8, 92, 248, 0.5);
     padding: 0.5rem;
     float: left;
     min-width: 12rem;
@@ -187,6 +187,7 @@
     font-size: 6rem;
     text-align: center;
     padding: 3rem;
+    border: 0;
   }
 
   .search__button,
@@ -194,7 +195,7 @@
   .search__dead {
     margin: 2rem;
     padding: 2rem;
-    background: rgb(17, 0, 250);
+    background-color: rgba(8, 92, 248);
     color: white;
     border-radius: 5rem;
     font-weight: 700;
@@ -227,7 +228,7 @@
   }
 
   [class$='col'] {
-    background-color: rgb(42, 30, 210);
+    background-color: rgba(8, 92, 248, 0.5);
     width: 100%;
     margin: 0.5rem;
     font-size: 5rem;

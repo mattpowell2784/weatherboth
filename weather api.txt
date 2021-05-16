@@ -6,6 +6,8 @@ To start git:g
 git init
 git add -A
 git commit -m 'version_name'
+git push origin master
+run github text
 
 
 git status
@@ -15,7 +17,7 @@ git log
 git branch
 git branch branch_name
 git checkout new-feature
-git push origin master
+
 
 npm init
 npm i parcel --save-dev
