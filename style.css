@@ -58,7 +58,7 @@
     height: 3rem;
     border: 0;
     padding: 2rem;
-    border-radius: 3rem;
+    border-radius: 7% 10% 10% 5% / 10% 47% 10% 37%;
     outline: none;
     text-align: center;
   }
@@ -71,7 +71,7 @@
     margin: 0.5rem;
     background: rgb(8, 92, 248);
     color: white;
-    border-radius: 3rem;
+    border-radius: 30% 70% 70% 30% / 30% 48% 52% 70%;
     font-weight: 700;
     font-family: lato;
     text-transform: uppercase;
@@ -190,9 +190,9 @@
   }
 
   .search__input {
-    margin-top: 2rem;
+    margin-top: 4rem;
     width: 90%;
-    border-radius: 5rem;
+    border-radius: 7% 10% 10% 5% / 10% 47% 10% 37%;
     font-size: 6rem;
     text-align: center;
     padding: 3rem;
@@ -206,7 +206,7 @@
     padding: 2rem;
     background-color: rgba(8, 92, 248);
     color: white;
-    border-radius: 5rem;
+    border-radius: 30% 70% 70% 30% / 30% 48% 52% 70%;
     font-weight: 700;
     font-size: 6rem;
     border: none;
