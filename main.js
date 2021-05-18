@@ -1,3 +1,6 @@
+// object to store current search values
+let currentSearch = {};
+
 //get result from search box when key is pressed
 //if there is more than 3 characters
 getAddressSearchValue();
@@ -5,10 +8,10 @@ function getAddressSearchValue() {
   const searchInput = document.querySelector('.search__input');
 
   searchInput.addEventListener('keyup', function () {
-    let searchFor = searchInput.value;
-    if (searchFor.length > 3) {
-      console.log(searchFor);
-      getGeoLocation(searchFor);
+    currentSearch.searchValue = searchInput.value;
+    if (currentSearch.searchValue.length > 1) {
+      console.log(currentSearch.searchValue);
+      getGeoLocation(currentSearch.searchValue);
     }
   });
 }
@@ -17,8 +20,6 @@ function getAddressSearchValue() {
 
 //get geolocation latitude and longitude
 const getGeoLocation = async function (address) {
-  let locationLngLat;
-  let locationDataTitle;
   try {
     //fetch geo location
     let getGeo = await fetch(
@@ -26,28 +27,28 @@ const getGeoLocation = async function (address) {
     );
     //// get latitude and longitude
     let geoData = await getGeo.json();
-    locationDataTitle = geoData.results[0].formatted_address;
-    locationLngLat = geoData.results[0].geometry.location;
+    currentSearch.locationDataTitle = geoData.results[0].formatted_address;
+    currentSearch.locationLngLat = geoData.results[0].geometry.location;
     console.log(geoData);
     //catch errors
     if (geoData.status != 'OK') {
       throw new Error();
     }
-    //get weather according to location
-    if (locationDataTitle) {
-      console.log(locationDataTitle);
-      getWeather(locationLngLat, locationDataTitle);
-      //catch errors
-    }
+    //catch errors
   } catch (error) {
+    currentSearch.errorMsg = 'Error getting locaton. Please try again';
+    renderError();
     console.log('geolocation error');
+    return;
   }
+  //get weather according to location
+  getWeather(currentSearch.locationLngLat);
 };
 
 //---------------------------------------------------------------------
 
 //get weather
-getWeather = async function (locationLatLng, locationDataTitle) {
+getWeather = async function (locationLatLng) {
   let weatherData;
   try {
     //get weather using latitute and longitute from geo location
@@ -63,10 +64,13 @@ getWeather = async function (locationLatLng, locationDataTitle) {
     }
     // catch errors
   } catch (err) {
+    currentSearch.errorMsg = 'Error getting weather. Please try again';
+    renderError();
     console.log('weather data error');
+    return;
   }
   //render weather data
-  renderWeatherData(weatherData, locationDataTitle);
+  renderWeatherData(weatherData);
 };
 
 //---------------------------------------------------------------------
@@ -75,6 +79,14 @@ getWeather = async function (locationLatLng, locationDataTitle) {
 function renderLocationTitle(location) {
   let selectColumn = document.querySelector(`.container`);
   let html = `<div class="title1" id="title">Weather for ${location}</div>`;
+  selectColumn.insertAdjacentHTML('afterbegin', html);
+}
+
+//renders error
+function renderError() {
+  let selectColumn = document.querySelector(`.container`);
+  let html = `<div class="error1" id="error">
+  ${currentSearch.errorMsg}</div>`;
   selectColumn.insertAdjacentHTML('afterbegin', html);
 }
 
@@ -125,13 +137,13 @@ function createWeatherRenderHtmlElements() {
 //---------------------------------------------------------------------
 
 //render weather data
-function renderWeatherData(weatherData, locationDataTitle) {
+function renderWeatherData(weatherData) {
   //clears screen for new search
   clearScreen();
   //create html elements to render weather
   createWeatherRenderHtmlElements();
   //renders title of weather location
-  renderLocationTitle(locationDataTitle);
+  renderLocationTitle(currentSearch.locationDataTitle);
 
   //render weather
   for (let i = 0; i < 7; i++) {
