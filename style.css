@@ -43,7 +43,7 @@
 
   .search__form {
     position: absolute;
-    top: 11rem;
+    top: 10rem;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
@@ -61,32 +61,6 @@
     border-radius: 7% 10% 10% 5% / 10% 47% 10% 37%;
     outline: none;
     text-align: center;
-  }
-
-  .search__button,
-  .search__reset,
-  .search__dead {
-    height: 5rem;
-    width: 20rem;
-    margin: 0.5rem;
-    background: rgb(8, 92, 248);
-    color: white;
-    border-radius: 30% 70% 70% 30% / 30% 48% 52% 70%;
-    font-weight: 700;
-    font-family: lato;
-    text-transform: uppercase;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 1rem 1rem rgba(255, 255, 255, 0.2);
-  }
-  .btn:active {
-    transform: translateY(-0.5px);
-    box-shadow: 0 5rem 15rem rgb(255, 255, 255, 90);
   }
 
   .container {
@@ -199,25 +173,6 @@
     border: 0;
   }
 
-  .search__button,
-  .search__reset,
-  .search__dead {
-    margin: 2rem;
-    padding: 2rem;
-    background-color: rgba(8, 92, 248);
-    color: white;
-    border-radius: 30% 70% 70% 30% / 30% 48% 52% 70%;
-    font-weight: 700;
-    font-size: 6rem;
-    border: none;
-    cursor: pointer;
-  }
-
-  .btn:active {
-    transform: translateY(-0.5px);
-    box-shadow: 0 5rem 15rem rgb(255, 255, 255, 90);
-  }
-
   .container {
     position: relative;
     width: 100%;
@@ -226,22 +181,35 @@
     font-weight: 700;
   }
 
-  .error {
+  .error1 {
     position: relative;
     width: 100%;
     text-align: center;
     font-size: 5rem;
     font-weight: 700;
+    color: rgb(75, 74, 74);
+  }
+
+  .title1 {
+    position: relative;
+    top: 2rem;
+    width: 100%;
+    text-align: center;
+    font-size: 5rem;
+    font-weight: 700;
+    color: rgb(75, 74, 74);
   }
 
   .row {
+    position: relative;
+    top: 2rem;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     grid-template-columns: repeat(auto-fit, minmax(320px, 340px));
     grid-template-rows: repeat(auto-fit, minmax(200px, 340px));
     gap: 2% 2%;
-    visibility: hidden;
+    visibility: visible;
   }
 
   [class$='col'] {
@@ -258,13 +226,9 @@
     color: white;
   }
 
-  [class$='title'] {
-    text-align: center;
-    font-size: 5.5rem;
-    color: white;
-  }
-
   .icon {
     width: 20%;
   }
+
+
 }

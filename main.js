@@ -1,145 +1,167 @@
-//get result for search box
+//get result from search box when key is pressed
+//if there is more than 3 characters
 getAddressSearchValue();
 function getAddressSearchValue() {
-  const searchButton = document.querySelector('.search__button');
+  const searchInput = document.querySelector('.search__input');
 
-  searchButton.addEventListener('click', function () {
-    event.preventDefault();
-    let searchFor = document.querySelector('.search__input').value;
-    getGeoLocation(searchFor);
+  searchInput.addEventListener('keyup', function (e) {
+    let searchFor = searchInput.value;
+    if (searchFor.length > 3) {
+      console.log(searchFor);
+      getGeoLocation(searchFor);
+    }
   });
 }
 
+//---------------------------------------------------------------------
+
 //get geolocation latitude and longitude
 const getGeoLocation = async function (address) {
-  let locationGeo;
-  let locationDataFor;
+  let locationLngLat;
+  let locationDataTitle;
   try {
     //fetch geo location
     let getGeo = await fetch(
       `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyA8-bJwYvWll9l7TwFW5b9TiJ9HMWPDljU`
     );
-    //parse data
+    //// get latitude and longitude
     let geoData = await getGeo.json();
+    locationDataTitle = geoData.results[0].formatted_address;
+    locationLngLat = geoData.results[0].geometry.location;
     console.log(geoData);
-    locationDataFor = geoData.results[0].formatted_address;
-    console.log(locationDataFor);
     //catch errors
     if (geoData.status != 'OK') {
       throw new Error();
     }
-    // get latitude and longitude
-    locationGeo = geoData.results[0].geometry.location;
+    //get weather according to location
+    if (locationDataTitle) {
+      console.log(locationDataTitle);
+      getWeather(locationLngLat, locationDataTitle);
+      //catch errors
+    }
   } catch (error) {
-    let selectContainer = document.querySelector(`.error`);
-    let html = `Please enter a valid town<br>`;
-    selectContainer.insertAdjacentHTML('afterbegin', html);
-  }
-  //get weather according to location
-  getWeather(locationGeo);
-  if (locationDataFor) {
-    renderLocationTitle(locationDataFor);
+    console.log('geolocation error');
   }
 };
 
+//---------------------------------------------------------------------
+
 //get weather
-getWeather = async function (location) {
+getWeather = async function (locationLatLng, locationDataTitle) {
+  let weatherData;
   try {
     //get weather using latitute and longitute from geo location
     let getWeather = await fetch(
-      `https://api.openweathermap.org/data/2.5/onecall?lat=${location.lat}&lon=${location.lng}&exclude=minutely&units=metric&appid=ce96bebb0d2a102f5cda8e9f1d1b7c58`
+      `https://api.openweathermap.org/data/2.5/onecall?lat=${locationLatLng.lat}&lon=${locationLatLng.lng}&exclude=minutely&units=metric&appid=ce96bebb0d2a102f5cda8e9f1d1b7c58`
     );
     //parse weather data
-    let weatherData = await getWeather.json();
+    weatherData = await getWeather.json();
     console.log(weatherData);
+    //throw error
     if (weatherData.cod === '400') {
       throw new Error();
     }
-
-    //render weather data
-    renderWeatherData(weatherData);
-  } catch (error) {
-    let selectColumn = document.querySelector(`.error`);
-    let html = `Error getting location<br>`;
-    selectColumn.insertAdjacentHTML('afterbegin', html);
+    // catch errors
+  } catch (err) {
+    console.log('weather data error');
   }
+  //render weather data
+  renderWeatherData(weatherData, locationDataTitle);
 };
 
-//render location title
+//---------------------------------------------------------------------
+
+//renders weather location title
 function renderLocationTitle(location) {
   let selectColumn = document.querySelector(`.container`);
-  let html = `<p id="location">Weather for ${location}</p>`;
+  let html = `<div class="title1" id="title">Weather for ${location}</div>`;
   selectColumn.insertAdjacentHTML('afterbegin', html);
 }
 
-//removes error messages if required
-function clearErrorMessages() {
-  let geoError = document.getElementById('error_id');
+//clears screen for new search
+function clearScreen() {
+  //clear error messages
+  let geoError = document.getElementById('error');
   if (geoError) {
     geoError.remove();
   }
-}
-
-mobileOrDesktopHtmlSpacer = function checkScreenSize() {
-  const screenWidth = screen.width;
-  console.log(screenWidth);
-  let spacer = '';
-
-  screenWidth < 420 ? (spacer = '&nbsp') : (spacer = '<p></p>');
-  console.log(spacer);
-  return spacer;
-};
-
-//render weather data
-function renderWeatherData(weatherData) {
-  //removes error messages if required
-  clearErrorMessages();
-
-  //get mobile or desktop html spacer
-  let spacer = mobileOrDesktopHtmlSpacer();
-
-  //render weather
-  for (let i = 0; i < 7; i++) {
-    //render date
-    let weather = weatherData.daily[0].dt;
-    let date = new Date((weather + i * 86400) * 1000).toString().slice(0, 10);
-    let selectColumn = document.querySelector(`.a${i}col`);
-    let html = `<b>${date}</b>${spacer}`;
-    selectColumn.insertAdjacentHTML('beforeend', html);
-
-    //render icon
-    weather = weatherData.daily[`${i}`].weather[0].icon;
-    selectColumn = document.querySelector(`.a${i}col`);
-    html = `<img class='icon' src="http://openweathermap.org/img/wn/${weather}@2x.png">${spacer}`;
-    selectColumn.insertAdjacentHTML('beforeend', html);
-
-    //render weather max temp
-    weather = Math.floor(weatherData.daily[`${i}`].temp.max);
-    selectColumn = document.querySelector(`.a${i}col`);
-    html = `Max ${weather} &deg C${spacer}`;
-    selectColumn.insertAdjacentHTML('beforeend', html);
-
-    //render weather type
-    weather = weatherData.daily[`${i}`].weather[0].main;
-    selectColumn = document.querySelector(`.a${i}col`);
-    html = `&nbsp &nbsp ${weather} &nbsp &nbsp `;
-    selectColumn.insertAdjacentHTML('beforeend', html);
-
-    //set weather display to visable
-    document.querySelector('.row').style.visibility = 'visible';
-
-    removeSearchFunction();
+  //clears title
+  let locationTitle = document.getElementById('title');
+  if (locationTitle) {
+    locationTitle.remove();
+  }
+  //clears weather render
+  const weatherParent = document.getElementById('weather_render');
+  while (weatherParent.firstChild != null) {
+    let weatherFirstChild = weatherParent.firstChild;
+    weatherParent.removeChild(weatherFirstChild);
   }
 }
 
-//remove search button to stop rendering issues
-function removeSearchFunction() {
-  let searchButton = document.querySelector('.search__form');
-  let searhHtml = `<input type="text" placeholder="" class="search__input"/>
-                  <button class="btn search__dead">Reset</button>'`;
-  searchButton.innerHTML = searhHtml;
+//checks screen size
+function checkScreenSize() {
+  const screenWidth = screen.width;
+  let desktopOrMobile;
+  screenWidth < 420
+    ? (desktopOrMobile = 'mobile')
+    : (desktopOrMobile = 'desktop');
+  return desktopOrMobile;
+}
 
-  searchButton.addEventListener('click', function () {
-    const searchButton = document.querySelector('.search__button');
-  });
+//creates weather html elements
+function createWeatherRenderHtmlElements() {
+  const selectWeatherRender = document.getElementById('weather_render');
+  for (let i = 0; i < 7; i++) {
+    let createCol = document.createElement(`div${i}`);
+    let setColClass = createCol.setAttribute('class', `a${i}col`);
+    let appendCol = selectWeatherRender.appendChild(createCol);
+    selectWeatherRender;
+    createCol;
+    setColClass;
+    appendCol;
+  }
+}
+
+//---------------------------------------------------------------------
+
+//render weather data
+function renderWeatherData(weatherData, locationDataTitle) {
+  //clears screen for new search
+  clearScreen();
+  //create html elements to render weather
+  createWeatherRenderHtmlElements();
+  //renders title of weather location
+  renderLocationTitle(locationDataTitle);
+
+  //render weather
+  for (let i = 0; i < 7; i++) {
+    //generate weather datapoints to render
+    let weatherUnixDate = weatherData.daily[0].dt;
+    let weatherDay = new Date((weatherUnixDate + i * 86400) * 1000)
+      .toString()
+      .slice(0, 10);
+    let weatherIcon = weatherData.daily[`${i}`].weather[0].icon;
+    let weatherMaxTemp = Math.floor(weatherData.daily[`${i}`].temp.max);
+    let weatherDesc = weatherData.daily[`${i}`].weather[0].main;
+
+    //render desktop version
+    if (checkScreenSize() === 'desktop') {
+      let selectColumn = document.querySelector(`.a${i}col`);
+      let html = `${weatherDay} <br>
+        <img class='icon' src="http://openweathermap.org/img/wn/${weatherIcon}@2x.png"></img><br> 
+        ${weatherMaxTemp}&deg C ${weatherDesc}`;
+      selectColumn.insertAdjacentHTML('beforeend', html);
+    }
+
+    if (checkScreenSize() === 'mobile') {
+      let selectColumn = document.querySelector(`.a${i}col`);
+      let html = `${weatherDay}
+        <img class='icon' src="http://openweathermap.org/img/wn/${weatherIcon}@2x.png"></img> 
+        ${weatherMaxTemp}&deg C ${weatherDesc}`;
+      selectColumn.insertAdjacentHTML('beforeend', html);
+    }
+  }
+
+  //set weather display to visable
+  document.querySelector('.row').style.visibility = 'visible';
 }
