@@ -4,15 +4,7 @@ getAddressSearchValue();
 function getAddressSearchValue() {
   const searchInput = document.querySelector('.search__input');
 
-  searchInput.addEventListener('keyup', function (e) {
-    //disable search on enter key
-    if (event.keyCode === 13) {
-      console.log(keyCode);
-      event.preventDefault();
-      return false;
-    }
-
-    //run search
+  searchInput.addEventListener('keyup', function () {
     let searchFor = searchInput.value;
     if (searchFor.length > 3) {
       console.log(searchFor);

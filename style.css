@@ -65,7 +65,7 @@
 
   .container {
     position: absolute;
-    top: 21rem;
+    top: 18rem;
     width: 100%;
     text-align: center;
     font-size: 3rem;
@@ -230,5 +230,7 @@
     width: 20%;
   }
 
-
+  .btn {
+    visibility: hidden;
+  }
 }
