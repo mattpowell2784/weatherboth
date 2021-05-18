@@ -84,6 +84,7 @@ function renderLocationTitle(location) {
 
 //renders error
 function renderError() {
+  clearScreen();
   let selectColumn = document.querySelector(`.container`);
   let html = `<div class="error1" id="error">
   ${currentSearch.errorMsg}</div>`;
