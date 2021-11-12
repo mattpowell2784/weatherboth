@@ -2,7 +2,6 @@
 let currentSearch = {};
 
 //get result from search box when key is pressed
-//if there is more than 3 characters
 getAddressSearchValue();
 function getAddressSearchValue() {
   const searchInput = document.querySelector('.search__input');
@@ -10,7 +9,6 @@ function getAddressSearchValue() {
   searchInput.addEventListener('keyup', function () {
     currentSearch.searchValue = searchInput.value;
     if (currentSearch.searchValue.length > 1) {
-      console.log(currentSearch.searchValue);
       getGeoLocation(currentSearch.searchValue);
     }
   });
@@ -23,7 +21,7 @@ const getGeoLocation = async function (address) {
   try {
     //fetch geo location
     let getGeo = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyA8-bJwYvWll9l7TwFW5b9TiJ9HMWPDljU`
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyC9XpTQXG54lSqFl7F5l8EBdSVOxEgpEVI`
     );
     //// get latitude and longitude
     let geoData = await getGeo.json();
